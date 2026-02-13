@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine Card 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+/* Basic Reset & Body */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg,#ffe6f0,#ffd9e8);
+  font-family: 'Playfair Display', serif;
+  overflow: hidden;
+}
+
+/* Scene Container */
+.scene {
+  position: relative;
+  width: 320px;
+  height: 220px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+/* Envelope */
+.envelope {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #ffb6c1;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.envelope-text {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 1px;
+  user-select: none;
+  animation: bounce 1.5s infinite alternate;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+/* Flap */
+.flap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ff99b3;
+  clip-path: polygon(0 0,100% 0,50% 60%);
+  transform-origin: top;
+  transition: transform 1s ease;
+}
+
+/* Card inside */
+.card {
+  position: absolute;
+  bottom: -5px;
+  left: 10px;
+  width: 300px;
+  height: 190px;
+  background: #fff0f5;
+  border-radius: 12px;
+  transform: translateY(140px) rotateX(90deg);
+  transform-origin: bottom;
+  transition: transform 1s ease;
+  box-shadow: 0 15px 30px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+
+/* Card inner content */
+.card-inner {
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 1s ease 0.8s;
+}
+
+.card.open .card-inner {
+  opacity: 1;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  font-size: 18px;
+  color: #ff4f79;
+  animation: float 4s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+@keyframes float {
+  0% {transform: translateY(0) scale(1);}
+  50% {transform: translateY(-20px) scale(1.1);}
+  100% {transform: translateY(0) scale(1);}
+}
+
+/* Text styles */
+h1 {
+  font-family: 'Dancing Script', cursive;
+  color: #ff4f79;
+  margin-top: 0;
+  text-align: center;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+}
+
+.signature {
+  margin-top: 10px;
+  text-align: right;
+  font-weight: bold;
+  color: #ff4f79;
+}
+
+/* Open states */
+.scene.open .flap {
+  transform: rotateX(180deg);
+}
+
+.scene.open .card {
+  transform: translateY(-60px) rotateX(0deg);
+}
+
+/* Glow effect */
+.card.open {
+  box-shadow: 0 15px 40px rgba(255,79,121,0.7), 0 0 20px rgba(255,182,193,0.5) inset;
+}
+
+/* Mobile swipe hint */
+.swipe-hint {
+  position: absolute;
+  bottom: -20px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #fff;
+  opacity: 0.8;
+  font-family: 'Dancing Script', cursive;
+  animation: hint 1.5s infinite alternate;
+}
+
+@keyframes hint {
+  0% {transform: translateY(0);}
+  100% {transform: translateY(-5px);}
+}
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="envelope">
+    <div class="flap"></div>
+    <div class="envelope-text">Happy Valentine’s Day 💌</div>
+    <div class="swipe-hint">Tap to open 💖</div>
+
+    <div class="card" id="card">
+      <div class="card-inner">
+        <h1>Crystal 💖</h1>
+
+        <p>
+        Happy Valentine’s Day 💖  
+        I know we’ve only just started talking, but you’ve already become one of my favorite parts of the day. Every time I see your name pop up, I can’t help but smile a little.
+        </p>
+
+        <p>
+        There’s something about you that’s really easy to like — your vibe, your laugh, the way our conversations flow so naturally. It feels like we’ve known each other longer than a week, and I mean that in the best way.
+        </p>
+
+        <p>
+        I’m really enjoying getting to know you, and I’m looking forward to more laughs and moments with you.
+        </p>
+
+        <p>
+        This isn’t me rushing anything — just being honest and a tiny bit brave — I like you, Crystal. And I’m excited to see where this goes.
+        </p>
+
+        <div class="signature">
+        — Grace 💕
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating hearts -->
+  <div class="heart" style="top: 10%; left: 20%;">💖</div>
+  <div class="heart" style="top: 30%; left: 70%;">💗</div>
+  <div class="heart" style="top: 60%; left: 40%;">💝</div>
+  <div class="heart" style="top: 50%; left: 80%;">💖</div>
+</div>
+
+<!-- Piano music -->
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const scene = document.getElementById('scene');
+const card = document.getElementById('card');
+const music = document.getElementById('music');
+
+let open = false;
+
+scene.addEventListener('click', () => {
+  open = !open;
+  scene.classList.toggle('open', open);
+  card.classList.toggle('open', open);
+  
+  if(open && music.paused){
+    music.play();
+  }
+});
+</script>
+
+</body>
+</html>
